@@ -39,3 +39,15 @@ Instead of C_n we will write cantorLine n, just for convinience.
 (Note that the origin of a segment is always on its left border instead of the middle. Thats why scaling lets the left boarder unaffected and changes the length of the segmet only on the right side.
 We could also have writen ```cantorLine 0 = hrule 1 # translateX (1/2)```)
 
+Bonus
+-----
+
+cantorLine' is a more general version of cantorLine. It takes two additional arguments:
+s is the number of segements that a single segment is divided to in one step
+ws is the witdh of a whitespace between the segments (in assumption that the segements have length 1)
+So cantorLine' 2 1 should give the same result as cantorLine.
+Play with it.
+
+> cantorLine' :: Double -> Double -> Int -> Diagram B R2
+> cantorLine' _ _ 0 = fromOffsets [unitX]
+> cantorLine' s w n = scale (1/(s+(s-1)*w)) $ foldl (<>) mempty [translateX ((1+w)*k) (cantorLine' s w (n-1)) | k <- [0..s-1]]
