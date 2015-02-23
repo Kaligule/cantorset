@@ -22,9 +22,9 @@ Instead of intersecting all the sets we draw below each other so one can get the
 > main = do mainWith (cantorEvolution :: Diagram B R2)
 
 > cantorEvolution :: Diagram B R2
-> cantorEvolution = vcat' (with & sep .~ 0.125) (map cantorLine [0 .. 8]) # centerXY
->                                                                       # pad 1.1
->                                                                       # bg white
+> cantorEvolution = vcat' (with & sep .~ 0.125) (map cantorLine [0 .. 3]) # centerXY
+>                                                                         # pad 1.1
+>                                                                         # bg white
 
 A single cantorline
 -------------------
@@ -48,6 +48,9 @@ ws is the witdh of a whitespace between the segments (in assumption that the seg
 So cantorLine' 2 1 should give the same result as cantorLine.
 Play with it.
 
-> cantorLine' :: Double -> Double -> Int -> Diagram B R2
+> cantorLine' :: Int -> Double -> Int -> Diagram B R2
 > cantorLine' _ _ 0 = fromOffsets [unitX]
-> cantorLine' s w n = scale (1/(s+(s-1)*w)) $ foldl (<>) mempty [translateX ((1+w)*k) (cantorLine' s w (n-1)) | k <- [0..s-1]]
+> cantorLine' s w n = scale (1/(sd+(sd-1)*w)) $ foldl (<>) mempty [translateX ((1+w)*k) (cantorLine' s w (n-1)) | k <- [0..sd-1]]
+>     where
+>       sd :: Double
+>       sd = fromIntegral s
